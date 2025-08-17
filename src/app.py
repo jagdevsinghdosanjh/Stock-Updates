@@ -5,6 +5,7 @@ import os
 from datetime import datetime  # ✅ Now meaningfully used
 import api_key
 import features
+from st_social_media_links import SocialMediaIcons
 
 api_key.load_polygon_key()
 # Header
@@ -109,6 +110,18 @@ features.show_volume_chart(filtered_df)
 features.show_key_statistics(filtered_df)
 features.show_candlestick_chart(filtered_df)
 features.export_csv(filtered_df, ticker)
+
+social_media_links = [
+    "https://www.facebook.com/YourPage",
+    "https://www.youtube.com/YourChannel",
+    "https://www.instagram.com/YourProfile",
+    "https://www.github.com/YourRepo",
+    "https://www.linkedin.com/in/YourProfile"
+]
+
+social_media_icons = SocialMediaIcons(social_media_links)
+social_media_icons.render(sidebar=True)  # or sidebar=False for main page
+
     
 # Footer
 st.markdown("""
