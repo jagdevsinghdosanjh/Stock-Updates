@@ -1,4 +1,4 @@
-# 📈 Multi-Company Stock Data Viewer
+# 📈 Stock Data Viewer - Select Company of your choice
 
 This Streamlit app allows users to view historical stock data for multiple companies using the Polygon.io API. It displays daily price trends, trading volume, and other key metrics in an interactive format.
 
@@ -8,7 +8,7 @@ This Streamlit app allows users to view historical stock data for multiple compa
 
 - 🔍 Select from popular companies like Apple, Microsoft, Tesla, Infosys, and more
 - 📊 View daily Open, Close, High, Low prices with interactive charts
-- 📅 Data range: January 1, 2025 to May 11, 2025 (modifiable)
+- 📅 Data range: January 1, 2025 to August 31, 2025 (modifiable)
 - 🧠 Caching enabled for faster performance
 - 🔐 Uses environment variable for secure API key management
 
@@ -19,8 +19,8 @@ This Streamlit app allows users to view historical stock data for multiple compa
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/multi-company-stock-app.git
-cd multi-company-stock-app
+git clone https://github.com/jagdevsinghdosanjh/Stock-Updates.git
+cd Stock-Updates
 
 2. Install Dependencies
 pip install -r requirements.txt
