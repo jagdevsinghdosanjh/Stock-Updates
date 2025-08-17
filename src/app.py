@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from datetime import datetime  # ✅ Now meaningfully used
 import api_key
+import features
 
 api_key.load_polygon_key()
 # Header
@@ -98,6 +99,19 @@ if df is not None:
     st.line_chart(df.set_index("date")[["Open", "Close", "High", "Low"]])
 else:
     st.stop()
+    
+    # Add moving averages
+df = features.add_moving_averages(df)
+
+# Filter by date
+filtered_df = features.filter_by_date(df)
+
+# Show enhanced features
+features.show_volume_chart(filtered_df)
+features.show_key_statistics(filtered_df)
+features.show_candlestick_chart(filtered_df)
+features.export_csv(filtered_df, ticker)
+    
 # Footer
 st.markdown("""
     <br><hr>
