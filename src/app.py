@@ -16,7 +16,6 @@ st.markdown("""
     <br>
 """, unsafe_allow_html=True)
 
-
 # --- Configuration ---
 BASE_URL = "https://api.polygon.io/v2/aggs/ticker"
 API_KEY = os.environ.get("POLYGON_API_KEY1")
@@ -46,7 +45,6 @@ COMPANIES = {
     "ICICI Bank Ltd. (ICICIBANK)": "ICICIBANK",
     "HDFC Bank Ltd. (HDFCBANK)": "HDFCBANK"
 }
-
 
 # --- Streamlit UI ---
 st.set_page_config(page_title="Multi-Company Stock App", layout="wide")
