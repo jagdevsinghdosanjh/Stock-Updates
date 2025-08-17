@@ -112,11 +112,12 @@ features.show_candlestick_chart(filtered_df)
 features.export_csv(filtered_df, ticker)
 
 social_media_links = [
-    "https://www.facebook.com/YourPage",
-    "https://www.youtube.com/YourChannel",
-    "https://www.instagram.com/YourProfile",
-    "https://www.github.com/YourRepo",
-    "https://www.linkedin.com/in/YourProfile"
+    "https://www.facebook.com/jagdevsinghdosanjh",
+    "https://www.youtube.com/jagdevsinghdosanjh",
+    "https://www.instagram.com/jagdevsinghdosanjh",
+    "https://www.github.com/jagdevsinghdosanjh",
+    "https://www.linkedin.com/in/jagdevsinghdosanjh"
+    "https://x.com/DosanjhJagdev"
 ]
 
 social_media_icons = SocialMediaIcons(social_media_links)
