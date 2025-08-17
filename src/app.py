@@ -121,7 +121,7 @@ social_media_links = [
 ]
 
 social_media_icons = SocialMediaIcons(social_media_links)
-social_media_icons.render(sidebar=True)  # or sidebar=False for main page
+social_media_icons.render(sidebar=False)  # or sidebar=False for main page
 
     
 # Footer
