@@ -5,8 +5,7 @@ from datetime import datetime
 
 def show_intraday_tab():
     st.header("📈 Intraday Stock Tracker")
-    now = datetime.now()
-    st.caption(f"📅 {now.strftime('%A, %d %B %Y %H:%M:%S')}")
+    st.caption(f"📅 {datetime.now().strftime('%A, %d %B %Y %H:%M:%S')}")
 
     # 🔍 Sidebar Inputs
     st.sidebar.header("🔍 Select a Stock")
@@ -60,7 +59,6 @@ def show_intraday_tab():
             st.error(f"❌ Failed to fetch data: {e}")
             return None
 
-    weekday = now.weekday()  # 0 = Monday, 6 = Sunday
     df = fetch_intraday_data(ticker, interval, range)
 
     # 📊 Display Data
@@ -73,23 +71,5 @@ def show_intraday_tab():
 
         st.subheader("📦 Volume Trend")
         st.bar_chart(df.set_index("Datetime")["Volume"])
-
     else:
-        if weekday >= 5:
-            st.info("📴 Markets are closed today (weekend). Showing recent historical data instead.")
-
-            # ⏳ Fallback to historical daily data
-            fallback_df = fetch_intraday_data(ticker, interval="1d", range="1mo")
-            if fallback_df is not None and not fallback_df.empty:
-                st.subheader(f"📊 Historical Daily Data for `{ticker}`")
-                st.dataframe(fallback_df[["Datetime", "Open", "High", "Low", "Close", "Volume"]], use_container_width=True)
-
-                st.subheader("📈 Price Movement")
-                st.line_chart(fallback_df.set_index("Datetime")[["Open", "Close", "High", "Low"]])
-
-                st.subheader("📦 Volume Trend")
-                st.bar_chart(fallback_df.set_index("Datetime")["Volume"])
-            else:
-                st.warning("⚠️ No historical data available either. Please try again later.")
-        else:
-            st.warning("⚠️ No data available. Try a different ticker or time range.")
+        st.warning("⚠️ No data available. Try a different ticker or time range.")
