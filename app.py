@@ -3,7 +3,9 @@ import requests
 import pandas as pd
 import os
 from datetime import datetime  # ✅ Now meaningfully used
+import api_key
 
+api_key.load_polygon_key()
 # Header
 st.markdown("""
     <div style='background-color:#0E1117; padding:15px; border-radius:10px;'>
@@ -16,7 +18,7 @@ st.markdown("""
 
 # --- Configuration ---
 BASE_URL = "https://api.polygon.io/v2/aggs/ticker"
-API_KEY = os.environ.get("POLYGON_API_KEY")
+API_KEY = os.environ.get("POLYGON_API_KEY1")
 START_DATE = "2025-01-01"
 END_DATE = "2025-08-31"
 

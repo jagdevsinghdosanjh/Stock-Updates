@@ -6,6 +6,12 @@ from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
+# Debug: Check what secrets are loaded
+st.write("Available secrets:", st.secrets)
+
+# Access your API key
+api_key = st.secrets["POLYGON_API_KEY"]
+
 # --- Configuration ---
 BASE_URL = "https://api.polygon.io/v2/aggs/ticker"
 API_KEY = os.environ.get("POLYGON_API_KEY")  # ✅ Refactored here
