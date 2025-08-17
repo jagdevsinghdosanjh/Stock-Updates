@@ -4,6 +4,8 @@ from features import show_features_tab
 from intraday import show_intraday_tab
 from polygon_app import show_polygon_tab
 from technical_indicators import technical_tab
+from stockdashboard.philosophy.philosophy_tab import philosophy_tab
+
 
 st.set_page_config(page_title="📊 Unified Trading Dashboard", layout="wide")
 st.title("🧭 Unified Trading Dashboard")
@@ -13,7 +15,8 @@ tabs = st.tabs([
     "🛠 Features",
     "📈 Intraday Tracker",
     "🌐 Polygon Stock Dashboard",
-    "Technical Indicators"
+    "Technical Indicators",
+    "Stock Philosophy"
 ])
 
 with tabs[0]:
@@ -30,6 +33,9 @@ with tabs[3]:
     
 with tabs[4]:
     technical_tab()
+
+with tabs[5]:
+    philosophy_tab()
 
 
 # import streamlit as st
