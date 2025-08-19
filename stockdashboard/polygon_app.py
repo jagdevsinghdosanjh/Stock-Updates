@@ -13,7 +13,7 @@ def show_polygon_tab():
     st.markdown("""
         <div style='background-color:#0E1117; padding:15px; border-radius:10px;'>
             <h1 style='color:#F5F5F5; text-align:center;'>📊 Stock Updates Dashboard</h1>
-            <p style='color:#CCCCCC; text-align:center;'>Track real-time data for top global companies by sector</p>
+            <p style='color:#CCCCCC; text-align:center;'>Top Global Companies by Sector - Tracker by Jagdev Singh Dosanjh</p>
         </div>
         <br>
     """, unsafe_allow_html=True)
