@@ -13,7 +13,7 @@ def show_polygon_tab():
     st.markdown("""
         <div style='background-color:#0E1117; padding:15px; border-radius:10px;'>
             <h1 style='color:#F5F5F5; text-align:center;'>📊 Stock Updates Dashboard</h1>
-            <p style='color:#CCCCCC; text-align:center;'>Track real-time data for top global companies by sector</p>
+            <p style='color:#CCCCCC; text-align:center;'>Track real-time data for top global and Indian companies</p>
         </div>
         <br>
     """, unsafe_allow_html=True)
@@ -23,51 +23,32 @@ def show_polygon_tab():
     START_DATE = "2023-08-21"
     END_DATE = "2025-08-31"
 
-    COMPANY_SECTORS = [
-        ["Technology", [
-            ("Apple Inc. (AAPL)", "AAPL"),
-            ("Alphabet Inc. (GOOGL)", "GOOGL"),
-            ("Microsoft Corporation (MSFT)", "MSFT"),
-            ("NVIDIA Corporation (NVDA)", "NVDA"),
-            ("Meta Platforms, Inc. (META)", "META"),
-            ("Intel Corporation (INTC)", "INTC"),
-            ("Advanced Micro Devices, Inc. (AMD)", "AMD"),
-            ("Oracle Corporation (ORCL)", "ORCL"),
-            ("Cisco Systems, Inc. (CSCO)", "CSCO"),
-            ("IBM Corporation (IBM)", "IBM"),
-            ("Infosys Ltd. ADR (INFY)", "INFY"),
-            ("Broadcom Inc. (AVGO)", "AVGO"),
-            ("Qualcomm Inc. (QCOM)", "QCOM"),
-            ("Adobe Inc. (ADBE)", "ADBE"),
-            ("Snowflake Inc. (SNOW)", "SNOW"),
-            ("Palantir Technologies Inc. (PLTR)", "PLTR")
-        ]],
-        ["Consumer Discretionary", [
-            ("Tesla, Inc. (TSLA)", "TSLA"),
-            ("Amazon.com, Inc. (AMZN)", "AMZN"),
-            ("Netflix, Inc. (NFLX)", "NFLX"),
-            ("Airbnb, Inc. (ABNB)", "ABNB"),
-            ("Uber Technologies, Inc. (UBER)", "UBER")
-        ]],
-        ["Fintech", [
-            ("PayPal Holdings, Inc. (PYPL)", "PYPL"),
-            ("Block, Inc. (SQ)", "SQ")
-        ]],
-        ["Enterprise Software & Cloud", [
-            ("Salesforce, Inc. (CRM)", "CRM"),
-            ("Snowflake Inc. (SNOW)", "SNOW"),
-            ("Palantir Technologies Inc. (PLTR)", "PLTR")
-        ]]
-    ]
+    COMPANIES = {
+        "Apple Inc. (AAPL)": "AAPL",
+        "Alphabet Inc. (GOOGL)": "GOOGL",
+        "Microsoft Corporation (MSFT)": "MSFT",
+        "NVIDIA Corporation (NVDA)": "NVDA",
+        "Tesla, Inc. (TSLA)": "TSLA",
+        "Infosys Ltd. (INFY)": "INFY",
+        "Amazon.com, Inc. (AMZN)": "AMZN",
+        "Meta Platforms, Inc. (META)": "META",
+        "Intel Corporation (INTC)": "INTC",
+        "Advanced Micro Devices, Inc. (AMD)": "AMD",
+        "Oracle Corporation (ORCL)": "ORCL",
+        "Cisco Systems, Inc. (CSCO)": "CSCO",
+        "IBM Corporation (IBM)": "IBM",
+        "Reliance Industries Ltd. (RELIANCE)": "RELIANCE",
+        "Tata Consultancy Services Ltd. (TCS)": "TCS",
+        "HCL Technologies Ltd. (HCLTECH)": "HCLTECH",
+        "Wipro Ltd. (WIPRO)": "WIPRO",
+        "Bharti Airtel Ltd. (BHARTIARTL)": "BHARTIARTL",
+        "ICICI Bank Ltd. (ICICIBANK)": "ICICIBANK",
+        "HDFC Bank Ltd. (HDFCBANK)": "HDFCBANK"
+    }
 
     st.caption(f"📅 Today's Date: {datetime.now().strftime('%A, %d %B %Y')}")
-
-    sector_names = [sector for sector, _ in COMPANY_SECTORS]
-    selected_sector = st.selectbox("Select Sector", sector_names)
-
-    sector_companies = dict(COMPANY_SECTORS)[selected_sector]
-    selected_company = st.selectbox("Select Company", [name for name, _ in sector_companies])
-    ticker = dict(sector_companies)[selected_company]
+    selected_company = st.selectbox("Select a Company", list(COMPANIES.keys()))
+    ticker = COMPANIES[selected_company]
 
     @st.cache_data(ttl=3600)
     def fetch_stock_data(ticker):
@@ -113,7 +94,7 @@ def show_polygon_tab():
         features.export_csv(filtered_df, ticker)
     else:
         st.stop()
-
+        
     social_media_links = [
         "https://www.facebook.com/jagdevsinghdosanjh",
         "https://www.youtube.com/jagdevsinghdosanjh",
@@ -125,6 +106,8 @@ def show_polygon_tab():
 
     social_media_icons = SocialMediaIcons(social_media_links)
     social_media_icons.render(sidebar=False)
+    
+    
 
     st.markdown("""
         <br><hr>
