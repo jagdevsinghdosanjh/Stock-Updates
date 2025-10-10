@@ -49,7 +49,7 @@ COMPANIES = {
 
 # --- Streamlit UI ---
 st.set_page_config(page_title="Multi-Company Stock App", layout="wide")
-st.title("📈 Stock Data Viewer")
+st.title("📈 Stocks By Jagan Singh Walia")
 
 # ✅ Display current date using datetime
 st.caption(f"📅 Today's Date: {datetime.now().strftime('%A, %d %B %Y')}")
