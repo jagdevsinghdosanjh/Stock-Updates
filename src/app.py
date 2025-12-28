@@ -21,7 +21,7 @@ st.markdown("""
 BASE_URL = "https://api.polygon.io/v2/aggs/ticker"
 API_KEY = os.environ.get("POLYGON_API_KEY1")
 START_DATE = "2015-01-01"
-END_DATE = "2025-10-31"
+END_DATE = "2025-12-31"
 
 # --- Company Options ---
 COMPANIES = {
@@ -49,7 +49,7 @@ COMPANIES = {
 
 # --- Streamlit UI ---
 st.set_page_config(page_title="Multi-Company Stock App", layout="wide")
-st.title("📈 Stocks By Jagan Singh Walia")
+st.title("📈 Stocks By Jagdev Singh Dosanjh")
 
 # ✅ Display current date using datetime
 st.caption(f"📅 Today's Date: {datetime.now().strftime('%A, %d %B %Y')}")
