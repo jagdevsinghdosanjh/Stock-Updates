@@ -16,7 +16,7 @@ api_key = st.secrets["POLYGON_API_KEY"]
 BASE_URL = "https://api.polygon.io/v2/aggs/ticker"
 API_KEY = os.environ.get("POLYGON_API_KEY")  # ✅ Refactored here
 START_DATE = "2025-01-01"
-END_DATE = "2025-05-11"
+END_DATE = "2025-12-31"
 
 # --- Company Options ---
 COMPANIES = {
