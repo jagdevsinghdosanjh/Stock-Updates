@@ -1,80 +1,85 @@
 import streamlit as st
-import requests
 import pandas as pd
-import os
-from datetime import datetime  # ✅ Now meaningfully used
-import api_key
+import requests
+from datetime import datetime
 import features
-from st_social_media_links import SocialMediaIcons
+import api_key
+import os
 
+# ---------------------------------------------------------
+# INITIAL SETUP
+# ---------------------------------------------------------
+st.set_page_config(page_title="Stock Analytics V2", layout="wide")
 api_key.load_polygon_key()
-# Header
-st.markdown("""
-    <div style='background-color:#0E1117; padding:15px; border-radius:10px;'>
-        <h1 style='color:#F5F5F5; text-align:center;'>📊 Stock Updates Dashboard</h1>
-        <p style='color:#CCCCCC; text-align:center;'>Track real-time data for top global and Indian companies</p>
-    </div>
-    <br>
-""", unsafe_allow_html=True)
 
-# --- Configuration ---
 BASE_URL = "https://api.polygon.io/v2/aggs/ticker"
 API_KEY = os.environ.get("POLYGON_API_KEY1")
 START_DATE = "2015-01-01"
 END_DATE = "2026-07-31"
 
-# --- Company Options ---
 COMPANIES = {
-    "Apple Inc. (AAPL)": "AAPL",
-    "Alphabet Inc. (GOOGL)": "GOOGL",
-    "Microsoft Corporation (MSFT)": "MSFT",
-    "NVIDIA Corporation (NVDA)": "NVDA",
-    "Tesla, Inc. (TSLA)": "TSLA",
-    "Infosys Ltd. (INFY)": "INFY",
-    "Amazon.com, Inc. (AMZN)": "AMZN",
-    "Meta Platforms, Inc. (META)": "META",
-    "Intel Corporation (INTC)": "INTC",
-    "Advanced Micro Devices, Inc. (AMD)": "AMD",
-    "Oracle Corporation (ORCL)": "ORCL",
-    "Cisco Systems, Inc. (CSCO)": "CSCO",
-    "IBM Corporation (IBM)": "IBM",
-    "Reliance Industries Ltd. (RELIANCE)": "RELIANCE",
-    "Tata Consultancy Services Ltd. (TCS)": "TCS",
-    "HCL Technologies Ltd. (HCLTECH)": "HCLTECH",
-    "Wipro Ltd. (WIPRO)": "WIPRO",
-    "Bharti Airtel Ltd. (BHARTIARTL)": "BHARTIARTL",
-    "ICICI Bank Ltd. (ICICIBANK)": "ICICIBANK",
-    "HDFC Bank Ltd. (HDFCBANK)": "HDFCBANK"
+    "Apple (AAPL)": "AAPL",
+    "Alphabet (GOOGL)": "GOOGL",
+    "Microsoft (MSFT)": "MSFT",
+    "NVIDIA (NVDA)": "NVDA",
+    "Tesla (TSLA)": "TSLA",
+    "Infosys (INFY)": "INFY",
+    "Amazon (AMZN)": "AMZN",
+    "Meta (META)": "META",
+    "Intel (INTC)": "INTC",
+    "AMD (AMD)": "AMD",
+    "Oracle (ORCL)": "ORCL",
+    "Cisco (CSCO)": "CSCO",
+    "IBM (IBM)": "IBM",
+    "Reliance (RELIANCE)": "RELIANCE",
+    "TCS (TCS)": "TCS",
+    "HCLTech (HCLTECH)": "HCLTECH",
+    "Wipro (WIPRO)": "WIPRO",
+    "Airtel (BHARTIARTL)": "BHARTIARTL",
+    "ICICI Bank (ICICIBANK)": "ICICIBANK",
+    "HDFC Bank (HDFCBANK)": "HDFCBANK"
 }
 
-# --- Streamlit UI ---
-st.set_page_config(page_title="Multi-Company Stock App", layout="wide")
-st.title("📈 Stocks By Jagdev Singh Dosanjh")
+# ---------------------------------------------------------
+# HEADER
+# ---------------------------------------------------------
+st.markdown("""
+    <h1 style='text-align:center;'>📊 Stock Analytics Dashboard — Version 2</h1>
+    <p style='text-align:center; color:gray;'>Advanced multi‑ticker analysis with JSON, Tier‑B, Tier‑C insights</p>
+""", unsafe_allow_html=True)
 
-# ✅ Display current date using datetime
-st.caption(f"📅 Today's Date: {datetime.now().strftime('%A, %d %B %Y')}")
+st.caption(f"📅 Today: {datetime.now().strftime('%A, %d %B %Y')}")
 
+# ---------------------------------------------------------
+# TICKER SELECTION
+# ---------------------------------------------------------
 selected_company = st.selectbox("Select a Company", list(COMPANIES.keys()))
 ticker = COMPANIES[selected_company]
 
-# --- Fetch Data ---
+# ---------------------------------------------------------
+# FETCH DATA
+# ---------------------------------------------------------
 @st.cache_data(ttl=3600)
 def fetch_stock_data(ticker):
     if not API_KEY:
-        st.error("API key not found. Please set POLYGON_API_KEY in your environment.")
+        st.error("API key missing.")
         return None
 
     url = f"{BASE_URL}/{ticker}/range/1/day/{START_DATE}/{END_DATE}?apiKey={API_KEY}"
     response = requests.get(url)
+
     if response.status_code != 200:
         st.error("Failed to fetch data.")
         return None
+
     data = response.json()
     if "results" not in data:
         st.warning("No results found.")
         return None
+
     df = pd.DataFrame(data["results"])
     df["date"] = pd.to_datetime(df["t"], unit="ms").dt.date
+
     df = df.rename(columns={
         "v": "Volume",
         "vw": "VWAP",
@@ -84,52 +89,59 @@ def fetch_stock_data(ticker):
         "l": "Low",
         "n": "Trades"
     })
+
     return df[["date", "Volume", "VWAP", "Open", "Close", "High", "Low", "Trades"]]
 
 df = fetch_stock_data(ticker)
-
-# --- Display Data ---
-if df is not None:
-    st.subheader(f"Stock Data for {selected_company}")
-    st.dataframe(df, use_container_width=True)
-
-    # --- Chart ---
-    st.subheader("📊 Price Trend")
-    st.line_chart(df.set_index("date")[["Open", "Close", "High", "Low"]])
-else:
+if df is None:
     st.stop()
-    
-    # Add moving averages
-df = features.add_moving_averages(df)
 
-# Filter by date
+# ---------------------------------------------------------
+# PROCESS DATA
+# ---------------------------------------------------------
+df = features.add_moving_averages(df)
 filtered_df = features.filter_by_date(df)
 
-# Show enhanced features
-features.show_volume_chart(filtered_df)
-features.show_key_statistics(filtered_df)
-features.show_candlestick_chart(filtered_df)
-features.export_csv(filtered_df, ticker)
+# ---------------------------------------------------------
+# TABS
+# ---------------------------------------------------------
+tab1, tab2, tab3, tab4 = st.tabs([
+    "📈 Dashboard",
+    "🧩 JSON Summary",
+    "📘 Tier‑B Lesson",
+    "💼 Tier‑C Case Study"
+])
 
-social_media_links = [
-    "https://www.facebook.com/jagdevsinghdosanjh",
-    "https://www.youtube.com/jagdevsinghdosanjh",
-    "https://www.instagram.com/jagdevsinghdosanjh",
-    "https://www.github.com/jagdevsinghdosanjh",
-    "https://www.linkedin.com/in/jagdevsinghdosanjh"
-    "https://x.com/DosanjhJagdev"
-]
+# ---------------------------------------------------------
+# TAB 1 — DASHBOARD
+# ---------------------------------------------------------
+with tab1:
+    st.subheader(f"📈 Price Trend — {ticker}")
+    st.line_chart(filtered_df.set_index("date")[["Open", "Close", "High", "Low"]])
 
-social_media_icons = SocialMediaIcons(social_media_links)
-social_media_icons.render(sidebar=False)  # or sidebar=False for main page
+    features.show_volume_chart(filtered_df)
+    features.show_key_statistics(filtered_df)
+    features.show_candlestick_chart(filtered_df)
+    features.export_csv(filtered_df, ticker)
 
-    
-# Footer
-st.markdown("""
-    <br><hr>
-    <div style='text-align:center; color:#888888; font-size:14px;'>
-        Made with ❤️ by Jagdev Singh Dosanjh<br>
-        Powered by Polygon.io & Streamlit<br>
-        <a href="https://dosanjhpubsasr.org">DOSANJHPUBSASR.ORG</a>
-    </div>
-""", unsafe_allow_html=True)
+# ---------------------------------------------------------
+# TAB 2 — JSON SUMMARY
+# ---------------------------------------------------------
+with tab2:
+    st.subheader("🧩 JSON Summary")
+    json_output = features.generate_json_summary(filtered_df, ticker)
+    st.json(json_output)
+
+# ---------------------------------------------------------
+# TAB 3 — TIER‑B LESSON
+# ---------------------------------------------------------
+with tab3:
+    st.subheader("📘 Student‑Friendly Lesson (Tier‑B)")
+    st.markdown(features.generate_tierB_script(filtered_df, ticker))
+
+# ---------------------------------------------------------
+# TAB 4 — TIER‑C CASE STUDY
+# ---------------------------------------------------------
+with tab4:
+    st.subheader("💼 Premium Case Study (Tier‑C)")
+    st.markdown(features.generate_tierC_case_study(filtered_df, ticker))
