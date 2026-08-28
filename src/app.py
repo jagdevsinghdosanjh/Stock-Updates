@@ -15,7 +15,7 @@ api_key.load_polygon_key()
 BASE_URL = "https://api.polygon.io/v2/aggs/ticker"
 API_KEY = os.environ.get("POLYGON_API_KEY1")
 START_DATE = "2015-01-01"
-END_DATE = "2026-07-31"
+END_DATE = "2026-09-30"
 
 COMPANIES = {
     "Apple (AAPL)": "AAPL",
